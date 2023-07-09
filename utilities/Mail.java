@@ -13,7 +13,8 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
-
+// Old Version ---> May not work
+// Refer new version : sendEmail.java (Working as on 9th July 2023)
 public class Mail
 {
 
