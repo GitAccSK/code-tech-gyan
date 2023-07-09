@@ -1,5 +1,6 @@
 package utilities;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
 import javax.mail.Message;
@@ -13,7 +14,7 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
 
-public class Mail
+public class MailAttachments
 {
 
 	//SETUP MAIL SERVER PROPERTIES
@@ -24,15 +25,15 @@ public class Mail
 	MimeMessage mimeMessage = null;
 	public static void main(String args[]) throws AddressException, MessagingException, IOException
 	{
-		Mail mail = new Mail();
+		MailAttachments mail = new MailAttachments();
 		mail.setupServerProperties();
 		mail.draftEmail();
 		mail.sendEmail();
 	}
 
 	private void sendEmail() throws MessagingException {
-		String fromUser = "pqr@gmail.com";  //Enter sender email id
-		String fromUserPassword = "*****";  //Enter sender gmail password , this will be authenticated by gmail smtp server
+		String fromUser = "pqr@gmail.com";
+		String fromUserPassword = "*****";
 		String emailHost = "smtp.gmail.com";
 		Transport transport = newSession.getTransport("smtp");
 		transport.connect(emailHost, fromUser, fromUserPassword);
@@ -42,7 +43,7 @@ public class Mail
 	}
 
 	private MimeMessage draftEmail() throws AddressException, MessagingException, IOException {
-		String[] emailReceipients = {"abc@gmail.com","xyz@gmail.com"};  //Enter list of email recepients
+		String[] emailReceipients = {"abc@gmail.com","xyz@gmail.com"};
 		String emailSubject = "Test Mail";
 		String emailBody = "Test Body of my email";
 		mimeMessage = new MimeMessage(newSession);
@@ -53,7 +54,9 @@ public class Mail
 		}
 		mimeMessage.setSubject(emailSubject);
 	   
-      // CREATE MIMEMESSAGE 
+		
+	    
+	    // CREATE MIMEMESSAGE 
 	    // CREATE MESSAGE BODY PARTS 
 	    // CREATE MESSAGE MULTIPART 
 	    // ADD MESSAGE BODY PARTS ----> MULTIPART 
@@ -62,8 +65,13 @@ public class Mail
 	    
 		 MimeBodyPart bodyPart = new MimeBodyPart();
 		 bodyPart.setContent(emailBody,"html/text");
+		 
+		 MimeBodyPart attachmentBodyPart = new MimeBodyPart();
+	   attachmentBodyPart.attachFile(new File("/Users/Desktop/CodeTechGyan.png"));
+		 
 		 MimeMultipart multiPart = new MimeMultipart();
 		 multiPart.addBodyPart(bodyPart);
+		 multiPart.addBodyPart(attachmentBodyPart);
 		 mimeMessage.setContent(multiPart);
 		 return mimeMessage;
 	}
@@ -75,5 +83,6 @@ public class Mail
 		properties.put("mail.smtp.starttls.enable", "true");
 		newSession = Session.getDefaultInstance(properties,null);
 	}
+	
 	
 }	
